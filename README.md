@@ -27,9 +27,11 @@ Instructions:
 	- jquery	
 
 - Run nodemon as service on terminal:
+	
 	nodemon watson.js
 
 - Run SimpleHTTPServer service on terminal:
+	
 	python -m SimpleHTTPServer
 
 - On browser, go to http://localhost:8000

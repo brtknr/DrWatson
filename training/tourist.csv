@@ -1,0 +1,18 @@
+How do I get to X?,direction
+What is there to do in X?,recommendation
+How much is a ticket for the underground?,cost
+How much is a ticket from X to Y?,cost
+What can I see nearby?,recommendation
+What are the famous landmarks in X?,recommendation
+What are the famous buildings in X?,recommendation
+Is there anything interesting happening in X tonight?,events
+What is the weather forecast?,weather
+What is the weather like tomorrow?,weather
+Are there any good hotels nearby?,recommendation
+Are there any good museums nearby?,recommendation
+What is the best time to travel to X?,time
+What time does the train from X to Y leave?,time
+What time is the train to X?,time
+Which station for X?,direction
+How much is a day travel pass for X?,cost
+I would like to buy a ticket to X.,ticket

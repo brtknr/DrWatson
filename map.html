@@ -1,0 +1,174 @@
+<html lang="en" data-ember-extension="1">
+ <head>
+  <meta charset="UTF-8">
+  <title>Host App</title>
+  
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="http://maps.google.com/maps/api/js?sensor=false"></script>  
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="bower_components/bootstrap-material-design/dist/js/material.min.js"></script>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="bower_components/bootstrap-material-design/dist/css/material.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/material-fullpalette.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  
+  <style type="text/css">
+  #gmaps {
+    
+    background-color: red;
+  }
+  </style>
+</head>
+<body ng-app="touristApp">
+    <script type="text/javascript"> 
+    function getParameterByName(name) {
+      name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+      var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+          results = regex.exec(location.search);
+      return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+    }
+      
+    var question = getParameterByName("question");
+
+    if (question == ''){
+      alert('Nothing to show!')
+    }
+    
+    // var question = "What kinds of things can I do around Baker Street, London?";
+    var watsonApiUrl = "http://localhost:3000/watson?question=" + question;
+    var request;
+    var map;
+    var address = 'Milton Keynes';
+    var head = document.getElementsByTagName('head')[0];
+    var js = document.createElement("script");     
+    $.get(watsonApiUrl).then(function(data){
+      console.log(JSON.stringify(data,null,2))
+      var confidence = document.getElementById('confidence');
+      var classification = document.getElementById('classification');
+
+      classification.innerHTML = data.class;
+      confidence.innerHTML = (data.confidence * 100).toFixed(2);      
+      switch (data.class)
+      {
+        case 'direction':
+          request = {
+           origin: data.from, 
+           destination: data.to,
+           travelMode: google.maps.DirectionsTravelMode.TRANSIT, transitOptions: {
+            modes: [google.maps.TransitMode.TRAIN,google.maps.TransitMode.BUS,google.maps.TransitMode.RAIL,google.maps.TransitMode.TRAM,google.maps.TransitMode.SUBWAY]
+           }
+          };
+          var directionsService = new google.maps.DirectionsService();
+          var directionsDisplay = new google.maps.DirectionsRenderer();
+          map = new google.maps.Map(document.getElementById('map'), {
+             zoom:7,
+             mapTypeId: google.maps.MapTypeId.ROADMAP
+          });
+          directionsDisplay.setMap(map);
+          directionsDisplay.setPanel(document.getElementById('panel'));
+          directionsService.route(request, function(response, status) {
+           if (status == google.maps.DirectionsStatus.OK) {
+             directionsDisplay.setDirections(response);
+           }
+          });
+          break;
+        case 'recommendation':
+          address = data.address
+          console.log('you have requested recommendation')
+          js.async = true
+          js.defer = true
+          js.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyC3NfwLdglLHfTOywln8RwUOOcLZfm_44Y&signed_in=true&libraries=places&callback=initMap'
+          head.appendChild(js);
+          break;
+      }
+    });
+
+    function initMap() {
+      var geocoder = new google.maps.Geocoder();
+      geocoder.geocode({'address': address}, function(results, status) {
+        if (status === google.maps.GeocoderStatus.OK) {
+          var pyrmont = results[0].geometry.location
+          console.log(pyrmont.toString())
+          map = new google.maps.Map(document.getElementById('map'), {
+            center: pyrmont,
+            zoom: 13
+          });
+
+          infowindow = new google.maps.InfoWindow();
+
+          var service = new google.maps.places.PlacesService(map);
+          service.nearbySearch({
+            location: pyrmont,
+            radius: 1000,
+            types: ['museum']
+          }, callback);
+        } else {
+          alert('Geocode was not successful for the following reason: ' + status);
+        }
+      });  
+
+    }
+
+    function callback(results, status) {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        var placesList = document.getElementById('panel');
+        placesList.innerHTML = '';
+        for (var i = 0; i < results.length; i++) {
+          createMarker(results[i]);
+          placesList.innerHTML += '<li>' + results[i].name + '</li>';
+        }
+      }
+    }
+
+    function createMarker(place) {
+      var placeLoc = place.geometry.location;
+      var marker = new google.maps.Marker({
+        map: map,
+        position: place.geometry.location
+      });
+
+      google.maps.event.addListener(marker, 'click', function() {
+        infowindow.setContent(place.name);
+        infowindow.open(map, this);
+      });
+    }
+   </script> 
+    <header>
+         <div class="bs-component">
+                            <div class="navbar navbar-inverse">
+                                <div class="navbar-header">
+                                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="navbar-inverse-collapse">
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+                                    <a class="navbar-brand" href="javascript:void(0)">Host App</a>
+                                </div>
+                                <div class="navbar-collapse collapse navbar-inverse-collapse">
+                                    <ul class="nav navbar-nav">
+                                       <!-- <li class=""><a href="javascript:void(0)">Item</a></li>-->
+                                    </ul>
+                                   
+                                </div>
+                            </div>
+                        <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;      </div>
+          </div>
+    </header>
+    <div class="container">
+      
+      <div class="row">
+           <div class="mic-area" style="margin: 10px 0 20px 0">
+          <a href="index.html" class="btn btn-danger btn-fab btn-raised mdi-av-mic-none" style="left: 50%"></a>
+          </div>
+      </div>
+     <div id="map" style="width: 800px; height: 500px; float: left; margin-bottom: 50px"></div> 
+    <div id="panel" style="width: 200px; float: right;"></div> 
+    
+    
+  </div>
+  <footer  style="position: fixed; bottom:0; background-color: #f44336; color: white; font-size: 40px; text-align: center;width: 100%; height: 60px;">
+      <div id="footer" style="">Watson is <span id="confidence">100</span>% certain that the query is "<span id="classification">nothing</span>" related.</div>
+    </footer>
+    </div>
+  
+</body></html>

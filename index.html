@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Host App</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular-route.min.js"></script>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="http://maps.google.com/maps/api/js?sensor=false"></script>
+
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  <script src="bower_components/bootstrap-material-design/dist/js/material.min.js"></script>
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css" rel="stylesheet">
+  <link href="bower_components/bootstrap-material-design/dist/css/material.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="bower_components/bootstrap-material-design/dist/css/material-fullpalette.min.css">
+  <link rel="stylesheet" href="css/main.css">
+  
+  <script src="js/microphone.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/route.js"></script>
+  <style type="text/css">
+  #gmaps {
+    width: 450px;
+    height: 450px;
+    background-color: red;
+}</style>
+  
+</head>
+<body ng-app="touristApp">
+    <header>
+         <div class="bs-component">
+                            <div class="navbar navbar-inverse">
+                                <div class="navbar-header">
+                                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="navbar-inverse-collapse">
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                        <span class="icon-bar"></span>
+                                    </button>
+                                    <a class="navbar-brand" href="javascript:void(0)">Host App</a>
+                                </div>
+                                <div class="navbar-collapse collapse navbar-inverse-collapse">
+                                    <ul class="nav navbar-nav">
+                                       <!-- <li class=""><a href="javascript:void(0)">Item</a></li>-->
+                                    </ul>
+                                   
+                                </div>
+                            </div>
+                        <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;      </div>
+          </div>
+    </header>
+    <div class="container">
+    <div ng-view></div>
+    </div>
+  </body>
+</html>

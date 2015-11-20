@@ -10,28 +10,8 @@ Instructions:
 
 - Follow instructions on the natural-language-classifier document to train Watson and get classifier ID, which you will need to specify in watson.js.
 
-- You may need the following node modules:
-	- connect
-	- cors
-	- express
-	- gulp
-	- gulp-sass
-	- jade
-	- nodemon
-	- serve-static
-	- socket.io
-	- watson-developer-cloud
+- Install node.js and npm.
 
-- You may also need the following bower components:
-	- bootstrap-material-design
-	- jquery	
+- type "npm install && bower install"
 
-- Run nodemon as service on terminal:
-	
-	nodemon watson.js
-
-- Run SimpleHTTPServer service on terminal:
-	
-	python -m SimpleHTTPServer
-
-- On browser, go to http://localhost:8000
+- Initialise the application via node watson.js. App is available at http://localhost:3000/index.html

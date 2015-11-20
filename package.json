@@ -9,6 +9,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "bower": "^1.6.5",
     "cors": "^2.7.1",
     "express": "^4.13.3",
     "gulp": "^3.9.0",

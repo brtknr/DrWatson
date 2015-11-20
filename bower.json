@@ -1,7 +1,8 @@
 {
   "name": "Tourist",
   "authors": [
-    "William Lee <me@william-lee.com>"
+    "William Lee <me@william-lee.com>",
+    "Bharat Kunwar <b.Kunwar@gmail.com>"
   ],
   "description": "Tourist App",
   "main": "index.html",

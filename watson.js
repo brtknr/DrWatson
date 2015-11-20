@@ -5,7 +5,24 @@ var cors = require('cors');
 
 var question = '';
 
+// please add your own details here
+var relationship_extraction = watson.relationship_extraction({
+  username: '498e16cc-5ef1-44a2-8ef3-35e139912dc3',
+  password: '8elW4nIDTKUn',
+  version: 'v1'
+});
+
+// please add your own details here
+var natural_language_classifier = watson.natural_language_classifier({
+  url: 'https://gateway.watsonplatform.net/natural-language-classifier/api',
+  username: '498e16cc-5ef1-44a2-8ef3-35e139912dc3',
+  password: '8elW4nIDTKUn',
+  version: 'v1'
+});
+
 app.use(cors());
+
+app.use(express.static('/'));
 
 app.get('/watson', function(req,res) {
   question = req.query.question;
@@ -86,17 +103,5 @@ app.get('/watson', function(req,res) {
 
 }).listen(3000);
 
-var relationship_extraction = watson.relationship_extraction({
-  username: '498e16cc-5ef1-44a2-8ef3-35e139912dc3',
-  password: '8elW4nIDTKUn',
-  version: 'v1'
-});
-
-var natural_language_classifier = watson.natural_language_classifier({
-  url: 'https://gateway.watsonplatform.net/natural-language-classifier/api',
-  username: '498e16cc-5ef1-44a2-8ef3-35e139912dc3',
-  password: '8elW4nIDTKUn',
-  version: 'v1'
-});
 
 // question = 'What are the best hotels around London Bridge?'
